@@ -141,6 +141,15 @@
   <ItemGroup>
     <ClCompile Include="a.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="comporator.h" />
+    <ClInclude Include="dsu.h" />
+    <ClInclude Include="gcd.h" />
+    <ClInclude Include="segtree.h" />
+    <ClInclude Include="sparse.h" />
+    <ClInclude Include="treap.h" />
+    <ClInclude Include="z.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
