@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <vector>
 
 using namespace std;
 
@@ -50,10 +51,11 @@ i64 rev(i64 a, i64 m) {
     return x = (x % m + m) % m;
 }
 
+i64 cnk(i64 n, i64 k, i64 m) {
+    if (n < k) {
+        return 0;
+    }
 
-
-
-i64 cnk(i64 n, i64 k) {
     i64 fn = 0;
     i64 fk = 0;
     i64 fnk = 0;
@@ -61,7 +63,7 @@ i64 cnk(i64 n, i64 k) {
     i64 f = 1;
     for (i64 i = 1; i <= n; i++) {
         f *= i;
-        f %= mod;
+        f %= m;
         if (i == n) {
             fn = f;
         }
@@ -74,24 +76,76 @@ i64 cnk(i64 n, i64 k) {
     }
 
     i64 R = fn;
-    R %= mod;
-    R *= rev(fk, mod);
-    R %= mod;
-    R *= rev(fnk, mod);
-    R %= mod;
+    R %= m;
+    R *= rev(fk, m);
+    R %= m;
+    R *= rev(fnk, m);
+    R %= m;
     return R;
 }
 
-i64 binpow(i64 a, i64 n) {
+i64 cnk(i64 n, i64 k, vector<i64>& f, i64 m) {
+    if (n < k) {
+        return 0;
+    }
+
+    i64 fn = f[n];
+    i64 fk = f[k];
+    i64 fnk = f[n - k];
+
+    i64 R = fn;
+    R %= m;
+    R *= rev(fk, m);
+    R %= m;
+    R *= rev(fnk, m);
+    R %= m;
+    return R;
+}
+
+
+i64 binpow(i64 a, i64 n, i64 m) {
     i64 res = 1;
     while (n) {
         if (n & 1) {
             res *= a;
-            res %= mod;
+            res %= m;
         }
         a *= a;
-        a %= mod;
+        a %= m;
         n >>= 1;
     }
-    return res % mod;
+    return res % m;
+}
+
+
+i64 phi(i64 n) {
+    i64 result = n;
+    for (i64 i = 2; i * i <= n; ++i)
+        if (n % i == 0) {
+            while (n % i == 0) {
+                n /= i;
+            }
+            result -= result / i;
+        }
+    if (n > 1) {
+        result -= result / n;
+    }
+    return result;
+}
+
+i64 rem(i64 a, i64 b, i64 m) {
+    i64 g = gcd(a, m);
+
+    if (b % g) {
+        return -1;
+    }
+
+    a /= g;
+    b /= g;
+    m /= g;
+
+    i64 x = binpow(a, phi(m) - 1, m);
+    x *= b;
+    x %= m;
+    return x;
 }
